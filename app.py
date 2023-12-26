@@ -4,6 +4,9 @@ from datetime import datetime
 
 app = Flask(__name__)                                              # tells flask app all you need is in current working dir
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'      #tells app where DB is located 3 / = relative path 4 is an absolute path
+app.config['SQLALCHEMY_BINDS']={
+    'credentials': 'sqlite:///credentials.db'
+}
 db =SQLAlchemy(app)
 app.app_context().push()                                         #ensures that you are within the application context when calling db.create_all(
 
@@ -12,7 +15,11 @@ class dbase(db.Model):                                              #Info in DB
     content = db.Column(db.String(200), nullable = False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
-
+class login(db.Model):
+    __bind_key__ = 'credentials'
+    id = db.Column(db.Integer, primary_key = True)
+    username = db.Column(db.String(30), unique= True, nullable= False)
+    password = db.Column(db.String(20))
 
 def __repr__(self):
     return '<Task %r>' % self.id        #returns task and its name when a new task is created, %r is placeholder for self.id
@@ -81,3 +88,12 @@ if __name__ == '__main__':
 '''
 To start db:  python3 > from app import db > db.create_all()
 '''
+
+
+'''@app.route('/login/', methods=['GET', 'POST'])
+def login():
+    
+    if request.method == 'POST':
+        if request.form['username'] == login.query.username.filter_by():
+            pass'''
+    
