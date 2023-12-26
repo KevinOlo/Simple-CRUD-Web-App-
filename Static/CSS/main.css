@@ -1,0 +1,37 @@
+body{
+    margin:0;
+    font-family: fantasy;
+    padding: 10px;               /* Add padding to cells for better spacing */
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+} 
+
+table{
+    margin-top: 30px;
+    width: 80%;
+    border-collapse: collapse;
+    border: 1px solid black;
+
+}
+
+.table-container{
+    margin-left: auto;
+    margin-right: auto;
+
+
+} /* Applys styles toable container */
+
+th, td {
+    border: 1px solid black;
+    text-align: center;
+    padding: 8px;
+}
+
+th{
+    font-weight: bolder;
+    text-decoration: underline;
+    text-shadow: 7px 7px 7px black;
+}
