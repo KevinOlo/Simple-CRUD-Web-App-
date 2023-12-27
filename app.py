@@ -2,6 +2,8 @@ from flask import Flask, current_app, render_template, url_for, request, redirec
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
+
+
 app = Flask(__name__)                                              # tells flask app all you need is in current working dir
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'      #tells app where DB is located 3 / = relative path 4 is an absolute path
 app.config['SQLALCHEMY_BINDS']={
@@ -10,34 +12,72 @@ app.config['SQLALCHEMY_BINDS']={
 db =SQLAlchemy(app)
 app.app_context().push()                                         #ensures that you are within the application context when calling db.create_all(
 
+
+
 class dbase(db.Model):                                              #Info in DB
     id = db.Column(db.Integer, primary_key = True)
     content = db.Column(db.String(200), nullable = False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
+
+
 class login(db.Model):
     __bind_key__ = 'credentials'
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(30), unique= True, nullable= False)
-    password = db.Column(db.String(20))
+    password = db.Column(db.String(20), nullable =False)
+
+
+
 
 def __repr__(self):
     return '<Task %r>' % self.id        #returns task and its name when a new task is created, %r is placeholder for self.id
 
 
 
-@app.route('/', methods=['POST', 'GET'])            # decorater to add more functionality
+
+
+@app.route('/', methods=['GET'])
 def index():
+    return redirect('/login/')
+
+
+
+
+
+@app.route('/login/', methods=['GET', 'POST'])
+def login():
+    
+    if request.method == 'POST':
+        username = request.form['username'] 
+        password = request.form['password'] 
+
+        user_check = login.query.filter_by(username=username).first()
+   
+        if user_check and user_check.password==password :
+            return '{username} has entered the Task Manager'
+        else:
+            return 'Invalid username or password'
+
+    return render_template('login.html')
+
+
+
+
+
+
+@app.route('/home/', methods=['POST', 'GET'])            # decorater to add more functionality
+def home():
     
 
-    if request.method == 'POST':             #index.html form interaction
+    if request.method == 'POST':                        #index.html form interaction
         task_content = request.form['content']
         new = dbase(content=task_content)
 
         try:
             db.session.add(new)
             db.session.commit()  
-            return redirect('/')            #redirect base to index.html
+            return redirect('/home/')                    #redirect base to index.html
 
         except:
                 return 'Error adding task'
@@ -48,6 +88,9 @@ def index():
         return  render_template('index.html', tasks=tasks)                 
         #return html template to web app
 
+
+
+
 @app.route('/delete/<int:id>')              #flask decoratoer '<>' used to create variable parts in the URL
 def delete(id):
     
@@ -56,10 +99,13 @@ def delete(id):
     try:
         db.session.delete(ToDelete)
         db.session.commit()
-        return redirect('/')
+        return redirect('/home/')
     
     except:
         return 'That task cannot be deleted or does not exist'
+
+
+
 
 
 
@@ -73,13 +119,16 @@ def update(id):
     
         try:
             db.session.commit()                        #content was set above so session.add isnt needed
-            return redirect('/')
+            return redirect('/home/')
 
         except:
             return 'The task could not be updated, or does not exist'
 
     else:
         return render_template('update.html', task=task)
+
+
+
 
 
 if __name__ == '__main__':
@@ -90,10 +139,5 @@ To start db:  python3 > from app import db > db.create_all()
 '''
 
 
-'''@app.route('/login/', methods=['GET', 'POST'])
-def login():
-    
-    if request.method == 'POST':
-        if request.form['username'] == login.query.username.filter_by():
-            pass'''
+
     
