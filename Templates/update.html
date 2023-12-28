@@ -1,25 +1,33 @@
 {% extends 'base.html' %}
 
-{% block head %} 
+
+{% block head %}
+
 
 <title> can i put header1 here? </title>
 <center><h1>My Todo List</h1></center>
 <center><body>Stay Organized, Stay on Task!</body></center>
 
+
 {% endblock %}
 
 
-{% block body %} 
-<div class="content"> 
-    <h1>Update Task</h1>
 
-    
-    <form action="/update/{{task.id}}"  method ='POST'>
-        <label for="content">Input Task</label>
-        <input type="text" name="content" id="content" value={{task.content}}>
-        <input type="submit" value="Update">
 
-    </form>       <!-- action url set to index and method to use -->
+{% block body %}
+<div class="content">
+   <h1>Update Task</h1>
+
+
+  
+   <form action="/update/{{task.id}}"  method ='POST'>
+       <label for="content">Input Task</label>
+       <input type="text" name="content" id="content" value={{task.content}}>
+       <input type="submit" value="Update Task">
+
+
+   </form>       <!-- action url set to index and method to use -->
+
 
 </div>
 {% endblock %}

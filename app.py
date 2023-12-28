@@ -46,11 +46,11 @@ def index():
 
 
 @app.route('/login/', methods=['GET', 'POST'])
-def login():
+def login_web():
     
     if request.method == 'POST':
-        username = request.form['username'] 
-        password = request.form['password'] 
+        username = request.form.get('username', '' )                 #request.form.get() used to retrieve the values with default values set to empty strings. helps prevent BadRequestKeyError if the keys are not present in the form data. 
+        password = request.form.get('password', '' )
 
         user_check = login.query.filter_by(username=username).first()
    
@@ -62,7 +62,21 @@ def login():
     return render_template('login.html')
 
 
-
+@app.route('/register/', methods=['POST', 'GET'])
+def register():
+    existing_user = login.query.filter_by(username=request.form.get('username')).first()
+    
+    if existing_user:
+        return'Sorry, this username has been taken'
+    else:
+        username= request.form.get('username', '')
+        newuser= login(username=username)
+        password= request.form.get('password', '')
+        newpwd= login(password=password)
+        db.session.add(newuser)
+        db.session.add(newpwd)                          # can also do            db.session.add_all([new_username, new_password])
+        db.session.commit()
+        redirect ('/login/')
 
 
 
@@ -138,6 +152,3 @@ if __name__ == '__main__':
 To start db:  python3 > from app import db > db.create_all()
 '''
 
-
-
-    
