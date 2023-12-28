@@ -3,14 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login Page</title>
 
-    <h1 style="text-align: center;">Welcome To The Task Manager</h1>
+    <h1 style="text-align: center; font-family:cursive;" >Welcome To The Task Manager</h1>
     <br>
     <i><b><center><small>Please enter your login credentials</small></center></b></body></i>
     <br>
-    
+
 </head>
+
+<!--Background color for login page-->
+<style>     
+    body{
+        background-color:antiquewhite;
+
+
+    }
+
+
+</style>
 
 
 <body>
@@ -22,14 +33,17 @@
         <input type="text" name="username" id="username">
     </form>
 
+    <br>
+
    <form style="text-align: center;" action='/login/' method='post'>
         <label for = 'password'>Password: </label>
-        <input type="text" name="password" id="password">
+        <input type="password" name="password" id="password">
         <br>
         <br>
         <input type="submit" value="Login">
     </form>>
 
+    <center> <small><i>Powered By: Kevin Kodes</i></small></center>
 
 </body>
 </html>
