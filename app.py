@@ -1,12 +1,17 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask_login import UserMixin
+from flask_wtf import wtforms
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import InputRequired, Length, ValidationError
 
 app = Flask(__name__)                                           # tells flask app all you need is in current working dir
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'     #tells app where DB is located 3 / = relative path 4 is an absolute path
-app.config['SQLALCHEMY_BINDS'] = {
+#app.config['SQLALCHEMY_BINDS'] = {
     'credentials': 'sqlite:///credentials.db'
 }
+app.config['SECRET_KEY']='g15classified'             #to secure session cookie
 db = SQLAlchemy(app)
 app.app_context().push()                                 #ensures that you are within the application context when calling db.create_all()
 
@@ -15,11 +20,36 @@ class dbase(db.Model):                              #Info in DB
     content = db.Column(db.String(200), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
-class login(db.Model):
-    __bind_key__ = 'credentials'
+class login(db.Model, UserMixin):
+    #__bind_key__ = 'credentials'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), unique=True, nullable=False)
-    password = db.Column(db.String(20), nullable=False)
+    password = db.Column(db.String(80), nullable=False)
+
+class registration(FlaskForm):
+   username = StringField(validators=[InputRequired(), Length(min=4, max=30)], render_kw = {'placeholder': 'username'})
+   password = PasswordField(validators=[InputRequired(), Length(min=4, max=80, render_kw={'placeholder': 'password'})])
+
+   submit = SubmitField("Create Account") 
+
+   def validateUser(self, username):
+      existingUserName = login.query.filter_by(username=username.data).first()  #.data - where the username column matches the value of username.data. Here, username refers to the form field, and .data is accessing the data submitted with the form. 
+      if existingUserName:
+         raise ValidationError('Username is already in use, please select a different one')
+      
+
+class loginform(FlaskForm):
+   username = StringField(validators=[InputRequired(), Length(min=4, max=30)], render_kw = {'placeholder': 'username'})
+   password = PasswordField(validators=[InputRequired(), Length(min=4, max=80, render_kw={'placeholder': 'password'})])
+
+   submit = SubmitField("Login") 
+
+   def validateUser(self, username):
+      existingUserName = login.query.filter_by(username=username.data).first()  #.data - where the username column matches the value of username.data. Here, username refers to the form field, and .data is accessing the data submitted with the form. 
+      if existingUserName:
+         raise ValidationError('Username is already in use, please select a different one')
+
+
 
 def __repr__(self):
     return '<Task %r>' % self.id                 #returns task and its name when a new task is created, %r is placeholder for self.id
@@ -43,6 +73,8 @@ def login_web():
 
     return render_template('login.html')
 
+
+
 @app.route('/register/', methods=['POST', 'GET'])
 def register():
     username = request.form.get('username')
@@ -61,6 +93,7 @@ def register():
         db.session.add(newuser)
         db.session.commit()
         return redirect('/login/')
+        return redirect (url_for('login_web') )
 
     return render_template('register.html')
 
