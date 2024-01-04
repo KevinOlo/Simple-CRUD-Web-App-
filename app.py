@@ -28,7 +28,7 @@ def __repr__(self):
 
 @app.route("/", methods=["GET"])
 def index():
-  return redirect("/login/")
+  return render_template('home.html')
 
 
 @app.route("/login/", methods=["GET", "POST"])

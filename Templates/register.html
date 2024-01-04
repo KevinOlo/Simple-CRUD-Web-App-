@@ -1,39 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'base.html' %}
+
+{% block head %}
    <title>Document</title>
 
 
 
+   <h1 style="text-decoration: underline; text-align: center; font-family: cursive;"> Create Your Account </h1>
 
 
 
 
 
-</head>
+{%  endblock %}
 
 
 
 
-<style>    
-   body{
-       background-color:antiquewhite;
+{% block body %}
 
-
-
-
-   }
-</style>
-
-
-
-
-<body>
  
-  <h1 style="text-decoration: underline; text-align: center; font-family: cursive;"> Create Your Account </h1>
-   <form style="text-align: center;" action="/register/" method="post get">
+   <form style="text-align: center;" action="/register/" method="POST">
        <label for="username">Username: </label>
        <input type="text" name="username" id="username" required>
        <br>
@@ -45,10 +31,4 @@
        <input type="submit" value="Create Account">
    </form>
 
-
-</body>
-
-
-
-
-</html>
+{% endblock %}

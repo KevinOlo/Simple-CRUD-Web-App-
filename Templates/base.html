@@ -2,9 +2,25 @@
 <html lang="en">
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">              <!-- define character set-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+
+    <!-- Bootstrap JS, needed for navbar stlying -->
+    <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+    crossorigin="anonymous"
+    />
+    <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    crossorigin="anonymous"
+    /> 
+   
+    
     
     {% block head %} 
     
@@ -13,11 +29,58 @@
 
 </head>
 
+
+<!--Background color for login page-->
+<style>    
+    body{
+        background-color:antiquewhite;
+ 
+    }
+ </style>
+
+
 <body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+        <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbar"
+        >
+
+        <span class="navbar-toggler-icon"></span>
+
+        </button>
+        <!--<div class="collapse navbar-collapse text-center mx-auto " id="navbar">      Adding text-center aligns the text content to the center, and mx-auto sets the horizontal margins to auto, effectively centering the entire navbar. This ensures that your navbar items are centered within the navbar when it's expanded.-->
+        <div class="collapse navbar-collapse justify-content-center" id="navbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" id="login" href="/login/">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="register" href="/register/">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="logout" href="/logout/">Logout</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="home" href="/">Home</a>
+                    </li>
+                </ul>
+        </div>
+    </nav>
+    
+    <br>
 
     {% block body %} 
     
     {% endblock %}
+
+    <br>
+    <br>
+    <center> <small><i>Powered By: Kevin Kodes</i></small></center>
 
 </body>
 </html>

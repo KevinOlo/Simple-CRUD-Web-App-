@@ -1,39 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'base.html' %}
+
+{% block head %} 
    <title>Login Page</title>
 
 
-   <h1 style="text-align: center; font-family:cursive;" >Welcome To The Task Manager</h1>
+   <h1 style="text-decoration: underline; text-align: center; font-family:cursive;" >Welcome To The Task Manager</h1>
    <br>
    <i><b><center><small>Please enter your login credentials</small></center></b></body></i>
    <br>
 
-
-</head>
-
-
-<!--Background color for login page-->
-<style>    
-   body{
-       background-color:antiquewhite;
+{% endblock %} 
 
 
 
 
-   }
 
-
-
-
-</style>
-
-
-
-
-<body>
+{% block body %} 
    
 
 
@@ -66,8 +48,7 @@
   
 
 
-   <center> <small><i>Powered By: Kevin Kodes</i></small></center>
 
 
-</body>
-</html>
+{% endblock %} 
+
