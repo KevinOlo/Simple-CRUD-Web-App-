@@ -20,6 +20,7 @@ class login(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   username = db.Column(db.String(30), unique=True, nullable=False)
   password = db.Column(db.String(20), nullable=False)
+  email = db.Column(db.String(120), unique=True, nullable=False)
 
 
 def __repr__(self):
@@ -28,7 +29,9 @@ def __repr__(self):
 
 @app.route("/", methods=["GET"])
 def index():
-  return render_template('home.html')
+  return render_template('index.html')
+
+
 
 
 @app.route("/login/", methods=["GET", "POST"])
@@ -40,7 +43,8 @@ def login_web():
     user_check = login.query.filter_by(username=username).first()
 
     if user_check and user_check.password == password:
-      return f"{username} has entered the Task Manager"
+      print (f"{username} has entered the Task Manager")
+      return redirect('/')
     else:
       return "Invalid username or password"
 
@@ -53,22 +57,34 @@ def register():
   if request.method == "POST":
     username = request.form.get("username")
     password = request.form.get("password")
+    email = request.form.get("email")
 
         # Check for empty values
-    if not username or not password:
-      return "Username and password cannot be empty"
+    if not username or not password or not email:
+      return "Username and password and email cannot be empty"
 
     existing_user = login.query.filter_by(username=username).first()
+    existing_email = login.query.filter_by(email=email).first()
+
 
     if existing_user:
       return "Sorry, this username has been taken"
+    elif existing_email:
+      return "This email is already in use"
     else:
-      newuser = login(username=username, password=password)
+      newuser = login(username=username, password=password, email=email)
       db.session.add(newuser)
       db.session.commit()
-      return redirect('/login/')
+    
+      return redirect('/registration_success/')   
 
   return render_template('register.html')
+
+
+
+@app.route('/registration_success/', methods=['POST'])
+def registration_success():
+  return redirect('/registration_success/')
 
 
 
