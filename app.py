@@ -1,19 +1,13 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)  # tells flask app all you need is in the current working dir
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///test.db"  # tells app where DB is located 3 / = relative path 4 is an absolute path
 app.config["SQLALCHEMY_BINDS"] = {"credentials": "sqlite:///credentials.db"}
+app.secret_key = 'raw_key'
 db = SQLAlchemy(app)
 app.app_context().push()  # ensures that you are within the application context when calling db.create_all()
-
-
-class dbase(db.Model):  # Info in DB
-  id = db.Column(db.Integer, primary_key=True)
-  content = db.Column(db.String(200), nullable=False)
-  date_created = db.Column(db.DateTime, default=datetime.utcnow)
-
 
 class login(db.Model):
   __bind_key__ = "credentials"
@@ -22,15 +16,26 @@ class login(db.Model):
   password = db.Column(db.String(20), nullable=False)
   email = db.Column(db.String(120), unique=True, nullable=False)
 
+class dbase(db.Model):  # Info in DB
+  id = db.Column(db.Integer, primary_key=True)
+  content = db.Column(db.String(200), nullable=False)
+  date_created = db.Column(db.DateTime, default=datetime.utcnow)
+  '''user_id = db.Column(db.Integer, db.ForeignKey('login.id'), nullable=False)
+  user = db.relationship('login', backref=db.backref('tasks', lazy=True))'''
+  
 
 def __repr__(self):
   return ("<Task %r>" % self.id)  # returns task and its name when a new task is created, %r is a placeholder for self.id
 
 
 @app.route("/", methods=["GET"])
-def index():
-  return render_template('index.html')
+def homepage():
+  return render_template('home.html')
 
+
+'''@app.route('/home/', methods=['GET', 'POST'])
+def index(): 
+  return render_template('index.html')'''
 
 
 
@@ -44,11 +49,20 @@ def login_web():
 
     if user_check and user_check.password == password:
       print (f"{username} has entered the Task Manager")
-      return redirect('/')
+      session['login'] = True
+      session['username'] = username
+      return redirect('/home/')
     else:
       return "Invalid username or password"
 
   return render_template("login.html")
+
+
+@app.route('/logout/', methods=['GET'])
+def logout():
+  session.clear()
+  return redirect('/')
+
 
 
 @app.route("/register/", methods=["POST", "GET"])
@@ -98,7 +112,7 @@ def home():
     try:
       db.session.add(new)
       db.session.commit()
-      return redirect('/home/')  # redirect base to index.html
+      return redirect('/index/')  # redirect base to index.html
 
     except:
       return 'Error adding task'

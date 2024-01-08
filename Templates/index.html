@@ -10,13 +10,13 @@
 
 
 {% block body %} 
-<div class="content"> 
+<div class="content, centered" > 
     <h1>Task Master</h1>
 
     {% if tasks | length < 1 %}
-    <h2>There are no tasks, please add one!</h2>
+    <p>There are no tasks, please add one!</p>
     {% else %}
-
+    
     <table>
         <tr> 
             <th>Task</th>
@@ -49,6 +49,6 @@
     </form>       <!-- action url set to index and method to use, form collect data from user to process @ server -->
 
 
-    <i><small>"Developed by Kevin Kodes"</small></i>
+    
 </div>
 {% endblock %}
