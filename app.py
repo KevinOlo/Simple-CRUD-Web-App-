@@ -105,22 +105,27 @@ def registration_success():
 @app.route('/home/', methods=['POST', 'GET'])  # decorator to add more functionality
 def home():
 
-  if request.method == 'POST':  # index.html form interaction
-    task_content = request.form['content']
-    new = dbase(content=task_content)
+  if session.get('login'):
+    if request.method == 'POST':  # index.html form interaction
+      task_content = request.form['content']
+      new = dbase(content=task_content)
 
-    try:
-      db.session.add(new)
-      db.session.commit()
-      return redirect('/index/')  # redirect base to index.html
+      try:
+        db.session.add(new)
+        db.session.commit()
+        return redirect('/index/')  # redirect base to index.html
 
-    except:
-      return 'Error adding task'
+      except:
+        return 'Error adding task'
+
+    else:
+      tasks = dbase.query.order_by(dbase.date_created).all()  # show all tasks sorted by creation date
+      return render_template('index.html', tasks=tasks)
+      # return html template to web app
 
   else:
-    tasks = dbase.query.order_by(dbase.date_created).all()  # show all tasks sorted by creation date
-    return render_template('index.html', tasks=tasks)
-    # return html template to web app
+    return 'Please login'
+    #return redirect('/login/')
 
 
 @app.route('/delete/<int:id>')  # flask decorator '<>' used to create variable parts in the URL
