@@ -2,21 +2,21 @@
 
 {% block head %} 
 
-<title> can i put header1 here? </title>
-<center><h1>My Todo List</h1></center>
+<title> Task Manager </title>
+<center><h1>My To-do List</h1></center>
 <center><body>Stay Organized, Stay on Task!</body></center>
 
 {% endblock %}
 
 
 {% block body %} 
-<div class="content"> 
+<div class="content, centered" > 
     <h1>Task Master</h1>
 
     {% if tasks | length < 1 %}
-    <h2>There are no tasks, please add one!</h2>
+    <p>There are no tasks, please add one!</p>
     {% else %}
-
+    
     <table>
         <tr> 
             <th>Task</th>
@@ -41,14 +41,14 @@
     </table>
     {% endif %}
     
-    <form action="/" method ='POST'>
+    <form action="/" method ='POST'>                        <!-- action tells what path (URL) submitted data goes to-->
         <label for="content">Input Task</label>
-        <input type="text" name="content" id="content">
-        <input type="submit" value="Add Task">
+        <input type="text" name="content" id="content">     <!-- named identifies field, id associates label w/ input field-->
+        <input type="submit" value="Add Task">             <!-- value is what will appear on input type in this case a button to submit data-->
 
-    </form>       <!-- action url set to index and method to use -->
+    </form>       <!-- action url set to index and method to use, form collect data from user to process @ server -->
 
 
-    <i><small>"Developed by Kevin Kodes"</small></i>
+    
 </div>
 {% endblock %}

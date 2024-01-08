@@ -6,7 +6,7 @@ body{
     justify-content: center;
     align-items: center;
     text-align: center;
-
+    
 } 
 
 table{
@@ -35,3 +35,13 @@ th{
     text-decoration: underline;
     text-shadow: 7px 7px 7px black;
 }
+
+.centered{  /* selector */
+
+    width: 50%; /* sets the width of the <div> to 50% of its parent container's width. */
+    margin: 0 auto; /* property to horizontally center a <div> */ 
+    /* controls the space around an element. 0 sets the top and bottom margins , while auto sets the left and right margins to automatically distribute space equally. */
+
+
+}
+

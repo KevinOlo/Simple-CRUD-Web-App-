@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block head %}
+   <title>Registration page</title>
+
+
+
+   <h1 style="text-decoration: underline; text-align: center; font-family: cursive;"> Create Your Account </h1>
+
+   <br>
+   <i><b><center><small>Please create your login credentials</small></center></b></body></i>
+   <br>
+
+
+
+{%  endblock %}
+
+
+
+
+{% block body %}
+
+ 
+   <form style="text-align: center;" action="/register/" method="POST">
+       <label for="username">Username: </label>
+       <input type="text" name="username" id="username" required>
+       <br>
+       <br>
+       <label for="password">Password: </label>
+       <input type="password" name="password" id="password" required>
+       <br>
+       <br>
+       <label for="text">E-mail: </label>
+       <input type="text" name="email" id="email" required>
+       <br>
+       <br>
+       <input type="submit" value="Create Account">
+   </form>
+
+{% endblock %}

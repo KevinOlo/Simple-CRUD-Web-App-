@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+   <title>Login Page</title>
+
+
+   <h1 style="text-decoration: underline; text-align: center; font-family:cursive;" >Welcome To The Task Manager</h1>
+   <br>
+   <i><b><center><small>Please enter your login credentials</small></center></b></body></i>
+   <br>
+
+{% endblock %} 
+
+
+
+
+
+{% block body %} 
+   
+
+
+   <form style="text-align: center;" action="/login/" method="post">
+       <label for='username'>Username: </label>
+       <input type="text" name="username" id="username">
+
+        <br>
+        <br>
+
+       <label for = 'password'>Password: </label>
+       <input type="password" name="password" id="password">
+       <br>
+       <br>
+       <input type="submit" value="Login">
+       <br>
+
+        <center><small><b><a href="/register/">Create Account</a></b> </small></center>             <!-- "&nbsp;" for a tab space-->
+  </form>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+{% endblock %} 
+
