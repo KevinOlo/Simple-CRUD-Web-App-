@@ -3,26 +3,29 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)  # tells flask app all you need is in the current working dir
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///test.db"  # tells app where DB is located 3 / = relative path 4 is an absolute path
-app.config["SQLALCHEMY_BINDS"] = {"credentials": "sqlite:///credentials.db"}
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///main.db"  # tells app where DB is located 3 / = relative path 4 is an absolute path
 app.secret_key = 'raw_key'
 db = SQLAlchemy(app)
 app.app_context().push()  # ensures that you are within the application context when calling db.create_all()
 
 class login(db.Model):
-  __bind_key__ = "credentials"
   id = db.Column(db.Integer, primary_key=True)
   username = db.Column(db.String(30), unique=True, nullable=False)
   password = db.Column(db.String(20), nullable=False)
   email = db.Column(db.String(120), unique=True, nullable=False)
 
+  def __repr__(self):
+      return f'<login {self.username}>'
+
 class dbase(db.Model):  # Info in DB
   id = db.Column(db.Integer, primary_key=True)
   content = db.Column(db.String(200), nullable=False)
   date_created = db.Column(db.DateTime, default=datetime.utcnow)
-  '''user_id = db.Column(db.Integer, db.ForeignKey('login.id'), nullable=False)
-  user = db.relationship('login', backref=db.backref('tasks', lazy=True))'''
-  
+  user_id = db.Column(db.Integer, db.ForeignKey('login.id'), nullable=False)
+  user = db.relationship('login', backref=db.backref('tasks', lazy=True))
+
+  def __repr__(self):
+      return f'<dbase {self.user_id}>'  
 
 def __repr__(self):
   return ("<Task %r>" % self.id)  # returns task and its name when a new task is created, %r is a placeholder for self.id
@@ -31,13 +34,6 @@ def __repr__(self):
 @app.route("/", methods=["GET"])
 def homepage():
   return render_template('home.html')
-
-
-'''@app.route('/home/', methods=['GET', 'POST'])
-def index(): 
-  return render_template('index.html')'''
-
-
 
 @app.route("/login/", methods=["GET", "POST"])
 def login_web():
@@ -51,6 +47,7 @@ def login_web():
       print (f"{username} has entered the Task Manager")
       session['login'] = True
       session['username'] = username
+      session['user_id'] = user_check.id    #Store user_id in the session
       return redirect('/home/')
     else:
       return "Invalid username or password"
@@ -90,7 +87,7 @@ def register():
       db.session.add(newuser)
       db.session.commit()
     
-      return redirect('/registration_success/')   
+      return redirect('/login/')   
 
   return render_template('register.html')
 
@@ -108,12 +105,12 @@ def home():
   if session.get('login'):
     if request.method == 'POST':  # index.html form interaction
       task_content = request.form['content']
-      new = dbase(content=task_content)
+      new = dbase(content=task_content, user_id=session['user_id'])
 
       try:
         db.session.add(new)
         db.session.commit()
-        return redirect('/index/')  # redirect base to index.html
+        return redirect('/home/')  # redirect base to index.html
 
       except:
         return 'Error adding task'
