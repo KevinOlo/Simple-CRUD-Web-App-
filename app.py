@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -44,13 +44,14 @@ def login_web():
     user_check = login.query.filter_by(username=username).first()
 
     if user_check and user_check.password == password:
-      print (f"{username} has entered the Task Manager")
+      flash (f"{username} has entered the Task Manager, Welcome!", category='success')
       session['login'] = True
       session['username'] = username
       session['user_id'] = user_check.id    #Store user_id in the session
       return redirect('/home/')
     else:
-      return "Invalid username or password"
+       flash("Invalid username or password", category='error')
+       return redirect('/login/')
 
   return render_template("login.html")
 
@@ -72,30 +73,26 @@ def register():
 
         # Check for empty values
     if not username or not password or not email:
-      return "Username and password and email cannot be empty"
+      flash("Username and password and email cannot be empty")
 
     existing_user = login.query.filter_by(username=username).first()
     existing_email = login.query.filter_by(email=email).first()
 
 
     if existing_user:
-      return "Sorry, this username has been taken"
+      flash("Sorry, this username has been taken")
     elif existing_email:
-      return "This email is already in use"
+      flash("This email is already in use")
     else:
       newuser = login(username=username, password=password, email=email)
       db.session.add(newuser)
       db.session.commit()
+      flash("Your acctount has been successfully created", category='success')
     
       return redirect('/login/')   
 
   return render_template('register.html')
 
-
-
-@app.route('/registration_success/', methods=['POST'])
-def registration_success():
-  return redirect('/registration_success/')
 
 
 
@@ -110,10 +107,11 @@ def home():
       try:
         db.session.add(new)
         db.session.commit()
+        flash('Task added successfully', category='success')
         return redirect('/home/')  # redirect base to index.html
 
       except:
-        return 'Error adding task'
+        flash( 'Error adding task', category='error')
 
     else:
       tasks = dbase.query.order_by(dbase.date_created).all()  # show all tasks sorted by creation date
@@ -121,7 +119,8 @@ def home():
       # return html template to web app
 
   else:
-    return 'Please login'
+    flash ('Please login')
+    return redirect('/login/')
     #return redirect('/login/')
 
 
