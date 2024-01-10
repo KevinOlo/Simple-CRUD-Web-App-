@@ -71,6 +71,36 @@
             </ul>
         </div>
     </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %} 
+    {% if messages %} 
+        {% for category, message in messages %} 
+        {% if category =='error' %}
+        <div class="container">
+            <div class="row justify-content-center" ></div>
+                <div class="alert alert-danger alter-dismissable fade show" role="alert" style="text-align: center; " > <!-- alert-danger shows msg in red-->
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="container">
+            <div class="row justify-content-center" ></div>
+                <div class="alert alert-success alter-dismissable fade show" role="alert" style="text-align: center;">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert">
+                    <span aria-hidden="true">&times;</span> <!--image inside button-->
+                </button>
+                </div>
+            </div>
+        </div>
+        {% endif %} 
+        {% endfor %} 
+    {% endif %} 
+    {% endwith %}
     
     <div class="container">
         {%block content%}       <!--content to float near navbar, like text-->
@@ -84,9 +114,8 @@
     
     {% endblock %}
 
-    <br>
-    <br>
-    <center> <small><i>Powered By: Kevin Kodes</i></small></center>
+    
+    <center> <small class="mt-5"><i>Powered By: Kevin Kodes</i></small></center>
 
 
     <!-- Bootstrap JS, popper, jquery needed for navbar stlying/functionality -->
