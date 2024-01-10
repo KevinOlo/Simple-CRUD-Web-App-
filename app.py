@@ -111,7 +111,7 @@ def home():
         return redirect('/home/')  # redirect base to index.html
 
       except:
-        flash( 'Error adding task', category='error')
+        flash('Error adding task', category='error')
 
     else:
       tasks = dbase.query.order_by(dbase.date_created).all()  # show all tasks sorted by creation date
