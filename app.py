@@ -82,7 +82,7 @@ def register():
     if existing_user:
       flash("Sorry, this username has been taken")
     elif existing_email:
-      flash("This email is already in use")
+      flash("Sorry, this email is already in use")
     else:
       newuser = login(username=username, password=password, email=email)
       db.session.add(newuser)
