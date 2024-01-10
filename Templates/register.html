@@ -22,19 +22,42 @@
 
  
    <form style="text-align: center;" action="/register/" method="POST">
-       <label for="username">Username: </label>
-       <input type="text" name="username" id="username" required>
-       <br>
-       <br>
-       <label for="password">Password: </label>
-       <input type="password" name="password" id="password" required>
-       <br>
-       <br>
-       <label for="text">E-mail: </label>
-       <input type="text" name="email" id="email" required>
-       <br>
-       <br>
-       <input type="submit" value="Create Account">
+       
+       <div class="container">
+         <div class="row justify-content-center" >
+            <div class="col-2 ">
+               <label for="username" class="mb-0">Username</label>
+               <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  name="username"
+                  placeholder="Enter username"
+               />
+               <br>
+               <label for="password" class="mb-0">Password</label>
+               <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  placeholder="Enter password"
+               />
+               <br>
+               <label for="email" class="mb-0">Password</label>
+               <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  placeholder="Enter email"
+               />
+            </div>
+         </div>
+      </div>
+      
+      <button type="submit" class="btn btn-primary mt-3">Register</button>
+
    </form>
 
 {% endblock %}
