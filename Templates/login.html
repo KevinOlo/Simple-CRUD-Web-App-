@@ -8,10 +8,8 @@
    <br>
    <i><b><center><small>Please enter your login credentials</small></center></b></body></i>
    <br>
-
+   
 {% endblock %} 
-
-
 
 
 
@@ -20,35 +18,36 @@
 
 
    <form style="text-align: center;" action="/login/" method="post">
-       <label for='username'>Username: </label>
-       <input type="text" name="username" id="username">
 
-        <br>
-        <br>
+       <div class="container">
+         <div class="row justify-content-center" >
+            <div class="col-2 ">
+               <label for="username" class="mb-0">Username</label>
+               <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  name="username"
+                  placeholder="Enter username"
+               />
+               <br>
+               <label for="password" class="mb-0">Password</label>
+               <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  placeholder="Enter password"
+               />
+               
+            </div>
+         </div>
+      </div>
+       
+       <button type="submit" class="btn btn-primary mt-3">Login</button>
 
-       <label for = 'password'>Password: </label>
-       <input type="password" name="password" id="password">
-       <br>
-       <br>
-       <input type="submit" value="Login">
-       <br>
-
-        <center><small><b><a href="/register/">Create Account</a></b> </small></center>             <!-- "&nbsp;" for a tab space-->
+        <center><small><b><a href="/register/" class="mt-3">Create Account</a></b> </small></center>             <!-- "&nbsp;" for a tab space-->
   </form>
 
 
-
-
-
-
-
-
-
-
-  
-
-
-
-
 {% endblock %} 
-
