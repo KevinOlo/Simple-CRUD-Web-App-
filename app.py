@@ -73,7 +73,8 @@ def register():
 
         # Check for empty values
     if not username or not password or not email:
-      flash("Username and password and email cannot be empty")
+      flash("Username and password and email cannot be empty", category='error')
+      return redirect('/register/')
 
     existing_user = login.query.filter_by(username=username).first()
     existing_email = login.query.filter_by(email=email).first()
@@ -114,12 +115,13 @@ def home():
         flash('Error adding task', category='error')
 
     else:
-      tasks = dbase.query.order_by(dbase.date_created).all()  # show all tasks sorted by creation date
+      #tasks = dbase.query.order_by(dbase.date_created).all()  # show all tasks sorted by creation date
+      tasks = dbase.query.filter_by(user_id=session['user_id']).order_by(dbase.date_created).all()
       return render_template('index.html', tasks=tasks)
       # return html template to web app
 
   else:
-    flash ('Please login')
+    flash ('Please login', category='error')
     return redirect('/login/')
     #return redirect('/login/')
 
