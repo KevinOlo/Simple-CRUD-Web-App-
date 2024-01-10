@@ -1,0 +1,7 @@
+To run the web application you will need to use 'pip install "dependency name" ' to install the following dependencies via the terminal:
+    1. Flask
+    2. Flask-SQLAlchemy
+
+To run the web application in a VM enter the following commands in the terminal:
+    1. python3 -m venv venv
+    2. source venv/bin/activate (MacOS/Linux) OR venv\Scripts\activate (Windows)
