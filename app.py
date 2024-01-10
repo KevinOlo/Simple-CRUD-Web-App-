@@ -88,7 +88,7 @@ def register():
       newuser = login(username=username, password=password, email=email)
       db.session.add(newuser)
       db.session.commit()
-      flash("Your acctount has been successfully created", category='success')
+      flash("Your account has been successfully created", category='success')
     
       return redirect('/login/')   
 
